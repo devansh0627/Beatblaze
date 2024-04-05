@@ -9,7 +9,7 @@ import songRoutes from './routes/song.js';
 import playlistRoutes from './routes/playlist.js';
 import cors from 'cors';
 const app = express();
-const port = 5500;
+const port = process.env.PORT || 5500;
 
 app.use(cors());
 app.use(express.json()); // this will let express know that whatever coming in our req.body it'll convert to json
