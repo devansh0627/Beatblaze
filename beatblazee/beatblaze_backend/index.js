@@ -11,7 +11,12 @@ import cors from 'cors';
 const app = express();
 const port = process.env.PORT || 5500;
 
-app.use(cors());
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://beatblaze-front.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 app.use(express.json()); // this will let express know that whatever coming in our req.body it'll convert to json
 // connecting mongodb to our node app
 dotenv.config();
