@@ -18,7 +18,8 @@ const LoggedInHome = () => {
       <LoggedIn currActive='home'>
         <div className="beatblazePlaylists p-4">
           <h1 className="text-2xl">BeatBlaze Playlists</h1>
-          <div className="cardContainer m-8 flex gap-2.5 flex-wrap overflow-y-auto" style={{ maxHeight: '65vh' }}>
+          <div className="cardContainer mt-8 overflow-y-auto grid gap-x-2 grid-flow-col-dense sm:grid-flow-row-dense sm:grid sm: gap-y-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5" style={{ maxHeight: '65vh' }}>
+
             <Card
               source1="/images/play_button.svg" source2="/images/hip_hop.png" name="Hip Hop" desc="Dive into raw hip-hop vibes – where beats speak and rhymes tell stories.
             🎤🔥"></Card>
