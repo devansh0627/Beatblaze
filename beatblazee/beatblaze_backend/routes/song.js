@@ -9,18 +9,18 @@ const router = express.Router();
 
 router.post(
     "/create",
-    passport.authenticate("jwt", {session: false}),
+    passport.authenticate("jwt", { session: false }),
     async (req, res) => {
         // req.user getss the user because of passport.authenticate
-        const {name, thumbnail, track} = req.body;
+        const { name, thumbnail, track } = req.body;
         if (!name || !thumbnail || !track) {
             return res
                 .status(301)
-                .json({err: "Insufficient details to create song."});
+                .json({ err: "Insufficient details to create song." });
         }
         const artist = req.user._id;
-        
-        const songDetails = {name, thumbnail, track, artist};
+
+        const songDetails = { name, thumbnail, track, artist };
         const createdSong = await Song.create(songDetails);
         return res.status(200).json(createdSong);
     }
@@ -29,13 +29,13 @@ router.post(
 // Get route to get all songs I have published.
 router.get(
     "/get/mysongs",
-    passport.authenticate("jwt", {session: false}),
+    passport.authenticate("jwt", { session: false }),
     async (req, res) => {
         // We need to get all songs where artist id == currentUser._id
-        const songs = await Song.find({artist: req.user._id}).populate(
+        const songs = await Song.find({ artist: req.user._id }).populate(
             "artist"
         );
-        return res.status(200).json({data: songs});
+        return res.status(200).json({ data: songs });
     }
 );
 
@@ -61,41 +61,41 @@ router.get(
 );
 router.post(
     "/add/likedsong",
-    passport.authenticate("jwt", {session: false}),
+    passport.authenticate("jwt", { session: false }),
     async (req, res) => {
         const currentUser = req.user;
-        const {songId} = req.body;
-        const currSong = await Song.findOne({_id: songId});
+        const { songId } = req.body;
+        const currSong = await Song.findOne({ _id: songId });
         if (!currSong) {
-            return res.status(304).json({err: "Song does not exist"});
+            return res.status(304).json({ err: "Song does not exist" });
         }
         currentUser.likedSongs.push(songId);
         await currentUser.save();
-        
+
         return res.status(200).json(currSong);
     }
 );
 router.post(
     "/remove/likedsong",
-    passport.authenticate("jwt", {session: false}),
+    passport.authenticate("jwt", { session: false }),
     async (req, res) => {
         const currentUser = req.user;
-        const {songId} = req.body;
-        const currSong = await Song.findOne({_id: songId});
+        const { songId } = req.body;
+        const currSong = await Song.findOne({ _id: songId });
         if (!currSong) {
-            return res.status(304).json({err: "Song does not exist"});
+            return res.status(304).json({ err: "Song does not exist" });
         }
         // Remove the songId from the currentUser's likedSongs array
         const index = currentUser.likedSongs.indexOf(songId);
         if (index !== -1) {
             currentUser.likedSongs.splice(index, 1);
         } else {
-            return res.status(404).json({err: "Song not found in liked songs"});
+            return res.status(404).json({ err: "Song not found in liked songs" });
         }
 
         await currentUser.save();
-        
-        return res.status(200).json({message: "Song removed from liked songs"});
+
+        return res.status(200).json({ message: "Song removed from liked songs" });
     }
 );
 
@@ -103,7 +103,7 @@ router.post(
 // I will send the artist id and I want to see all songs that artist has published.
 router.get(
     "/get/artist/:artistId",
-    passport.authenticate("jwt", {session: false}),
+    passport.authenticate("jwt", { session: false }),
     async (req, res) => {
         // also it's encouraged that req.body should be empty in get req
         // We can check if the artist does not exist
@@ -111,30 +111,36 @@ router.get(
         if (!ObjectId.isValid(artistId)) {// this method is build in to check whether id is of correct format if this check isn't included then server might crash if the format is wrong cuz like before suppose artist id is to be of 12 bytes but it came as <12 or >12 
             return res.status(400).json({ message: "Invalid artistID" });
         }
-        const artist = await User.findOne({_id: artistId});
+        const artist = await User.findOne({ _id: artistId });
         if (!artist) {
-            return res.status(301).json({err: "Artist does not exist"});
+            return res.status(301).json({ err: "Artist does not exist" });
         }
 
-        const songs = await Song.find({artist: artistId});
-        return res.status(200).json({data: songs});
+        const songs = await Song.find({ artist: artistId });
+        return res.status(200).json({ data: songs });
     }
 );
 
 // Get route to get a single song by name
 router.get(
     "/get/songname/:songName",
-    passport.authenticate("jwt", {session: false}),
+    passport.authenticate("jwt", { session: false }),
     async (req, res) => {
-        const {songName} = req.params;
+        const { songName } = req.params;
 
-        // Use a regular expression for pattern matching
-        const regex = new RegExp(songName, "i"); // "i" flag for case-insensitive matching
+        try {
+            // Use a regular expression for pattern matching
+            const regex = new RegExp(songName, "i"); // "i" flag for case-insensitive matching
 
-        const songs = await Song.find({name: {$regex: regex}}).populate("artist");
-        return res.status(200).json({data: songs});
+            const songs = await Song.find({ name: { $regex: regex } }).populate("artist");
+            return res.status(200).json({ data: songs });
+        } catch (err) {
+            console.error("Error searching for songs:", err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
     }
 );
+
 
 
 
