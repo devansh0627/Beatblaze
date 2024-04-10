@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 const Card = ({ source1, source2, name, desc,playlistId }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate=useNavigate();
