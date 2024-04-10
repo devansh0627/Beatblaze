@@ -44,6 +44,7 @@ const UserProfileIcon = ({ firstname, lastname }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['tokenForAuth', 'tokenForFirstName', 'tokenForLastName']);
     const handleLogout = () => {
         // Remove the authentication token cookie
+        if(soundPlayed)
         soundPlayed.stop();
         toast.success("Logout Successful! See you soon!", {
             autoClose: 1500,
@@ -73,7 +74,7 @@ const UserProfileIcon = ({ firstname, lastname }) => {
             <div className="relative flex gap-3">
                 {cookies.tokenForAuth ? (
                     <>
-                        <button className="font-bold py-2 px-4 rounded-full hover:scale-105 mr-2 bg-gray-900" style={{ color: "#ECF0F1", transition: 'font-size 0.2s ease, transform 0.2s ease' }} onClick={() => navigate('/uploadSong')}>
+                        <button className="font-bold text-sm sm:text-md py-2 px-4 rounded-full hover:scale-105 mr-2 bg-gray-900" style={{ color: "#ECF0F1", transition: 'font-size 0.2s ease, transform 0.2s ease' }} onClick={() => navigate('/uploadSong')}>
                             Upload Song
                         </button>
 
