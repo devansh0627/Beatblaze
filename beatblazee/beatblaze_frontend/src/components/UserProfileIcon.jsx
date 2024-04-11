@@ -42,10 +42,20 @@ const UserProfileIcon = ({ firstname, lastname }) => {
         };
     }, []);
     const [cookies, setCookie, removeCookie] = useCookies(['tokenForAuth', 'tokenForFirstName', 'tokenForLastName']);
+    const [loading, setLoading] = useState(false); // State for loading indicator
     const handleLogout = () => {
         // Remove the authentication token cookie
-        if(soundPlayed)
-        soundPlayed.stop();
+        if (soundPlayed)
+            soundPlayed.stop();
+        setLoading(true); // Set loading to true before logout process
+        // Display loading toast message
+        const loadingToastId = toast.loading("Logging out...");
+        const temp = async () => {
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate a 1 second delay for the logout process
+        }
+        temp();
+        // Hide loading toast message
+        toast.dismiss(loadingToastId);
         toast.success("Logout Successful! See you soon!", {
             autoClose: 1500,
             onClose: () => {
