@@ -59,7 +59,7 @@ const Home = () => {
             <ul className="py-5 m-1.5">
               <li
                 className={`w-auto flex gap-3 items-center cursor-pointer py-4 ${activeTab === 'home' ? 'text-white' : hoverTab === 'home' ? 'text-white' : 'text-gray-400'}`}
-                onClick={() => handleTabClick('home')}
+                onClick={() => {handleTabClick('home');closingLeftPane();}}
                 onMouseEnter={() => handleTabHover('home')}
                 onMouseLeave={() => handleTabHover(null)}
                 style={{ transition: 'color 0.3s ease' }}
@@ -68,7 +68,7 @@ const Home = () => {
               </li>
               <li
                 className={`w-auto flex gap-3 items-center cursor-pointer py-4 ${activeTab === 'search' ? 'text-white' : hoverTab === 'search' ? 'text-white' : 'text-gray-400'}`}
-                onClick={() => { handleTabClick('search'); setLoginAndSignUpOverlay(true); }}
+                onClick={() => { handleTabClick('search');closingLeftPane(); setLoginAndSignUpOverlay(true); }}
                 onMouseEnter={() => handleTabHover('search')}
                 onMouseLeave={() => handleTabHover(null)}
                 style={{ transition: 'color 0.3s ease' }}
@@ -77,7 +77,7 @@ const Home = () => {
               </li>
               <li
                 className={`w-auto flex gap-3 items-center cursor-pointer py-4 ${activeTab === 'library' ? 'text-white' : hoverTab === 'library' ? 'text-white' : 'text-gray-400'}`}
-                onClick={() => { handleTabClick('library'); setLoginAndSignUpOverlay(true); }}
+                onClick={() => { handleTabClick('library'); closingLeftPane(); setLoginAndSignUpOverlay(true); }}
                 onMouseEnter={() => handleTabHover('library')}
                 onMouseLeave={() => handleTabHover(null)}
                 style={{ transition: 'color 0.3s ease' }}
@@ -88,7 +88,7 @@ const Home = () => {
             <ul className="pt-5 m-1.5">
               <li
                 className={`w-auto flex gap-3 items-center cursor-pointer py-4 ${activeTab === 'createPlaylist' ? 'text-white' : hoverTab === 'createPlaylist' ? 'text-white' : 'text-gray-400'}`}
-                onClick={() => { handleTabClick('createPlaylist'); setLoginAndSignUpOverlay(true); }}
+                onClick={() => { handleTabClick('createPlaylist'); closingLeftPane(); setLoginAndSignUpOverlay(true); }}
                 onMouseEnter={() => handleTabHover('createPlaylist')}
                 onMouseLeave={() => handleTabHover(null)}
                 style={{ transition: 'color 0.3s ease' }}
@@ -97,7 +97,7 @@ const Home = () => {
               </li>
               <li
                 className={`w-auto flex gap-3 items-center cursor-pointer py-4 ${activeTab === 'likedSongs' ? 'text-white' : hoverTab === 'likedSongs' ? 'text-white' : 'text-gray-400'}`}
-                onClick={() => { handleTabClick('likedSongs'); setLoginAndSignUpOverlay(true); }}
+                onClick={() => { handleTabClick('likedSongs'); closingLeftPane(); setLoginAndSignUpOverlay(true); }}
                 onMouseEnter={() => handleTabHover('likedSongs')}
                 onMouseLeave={() => handleTabHover(null)}
                 style={{ transition: 'color 0.3s ease' }}
