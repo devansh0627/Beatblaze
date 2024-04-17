@@ -20,7 +20,7 @@ const Library = () => {
     <>
     <LoggedIn currActive={'library'}>
         <div className="text-white text-xl font-semibold pb-4 pl-4 pt-8">My Playlists</div>
-        <div className='m-8 flex gap-2.5 flex-wrap overflow-y-auto' style={{maxHeight: '65vh'}}>
+        <div className="mt-8 mx-6 overflow-y-auto grid gap-x-2 grid-flow-col-dense sm:grid-flow-row-dense sm:grid sm: gap-y-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5" style={{ maxHeight: '65vh' }}>
         <div onClick={()=>{navigate('/likedsongs')}}>
         <Card source1='' source2='/images/likedSongs.svg' name='Liked Songs' desc=''></Card>
         </div>
