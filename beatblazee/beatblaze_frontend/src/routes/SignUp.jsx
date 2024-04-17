@@ -18,6 +18,7 @@ const SignUp = () => {
     const [confirmEmailError, setConfirmEmailError] = useState('');
     const [userNameError, setUserNameError] = useState('');
     const [cookie, setCookie] = useCookies(['tokenForAuth', 'tokenForFirstName', 'tokenForLastName']);
+    const [loading, setLoading] = useState(false); // State for loading indicator
     const navigate = useNavigate();
     const validateEmail = (email) => {
         const re = /\S+@\S+\.\S+/;
@@ -48,8 +49,10 @@ const SignUp = () => {
     }
 
     const signUpDetails = async () => {
+        setLoading(true); // Set loading to true before API call
         const data = { email, password, userName, firstName, lastName };// these fields will pass to backend so make sure this naming remains same while fetching 
         const res = await utils.makeUnauthenticatedPOSTRequest('/auth/register', data);
+        setLoading(false); // Set loading back to false after API call completes
         if (res.data && res.status != 400 && res.data.error) {
             setEmailError(res.data.error);
         }
@@ -61,16 +64,22 @@ const SignUp = () => {
         else {
             const token = res.data.token;
             const date = new Date();
-            // Display success toast message
-            toast.success("Sign up successful! Welcome to BeatBlaze!", {
-                autoClose: 1500,
-                onClose: () => {
-                    date.setDate(date.getDate() + 30);
-                    setCookie("tokenForAuth", token, { path: "/", expires: date });
-                    setCookie("tokenForFirstName", res.firstName, { path: "/", expires: date });
-                    setCookie("tokenForLastName", res.lastName, { path: "/", expires: date }); navigate('/')
-                }
-            });
+            // Display loading toast message for sign up
+            const loadingToastId = toast.loading("Signing up..."); // Show loading toast message
+            setTimeout(() => {
+                // Hide loading toast message
+                toast.dismiss(loadingToastId);
+                // Display success toast message
+                toast.success("Sign up successful! Welcome to BeatBlaze!", {
+                    autoClose: 1500,
+                    onClose: () => {
+                        date.setDate(date.getDate() + 30);
+                        setCookie("tokenForAuth", token, { path: "/", expires: date });
+                        setCookie("tokenForFirstName", res.firstName, { path: "/", expires: date });
+                        setCookie("tokenForLastName", res.lastName, { path: "/", expires: date }); navigate('/')
+                    }
+                });
+            }, 1000);
         }
     }
     const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 768 });
