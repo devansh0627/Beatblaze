@@ -17,20 +17,20 @@ const Login = () => {
     const loginDetails = async () => {
         setLoading(true); // Set loading to true before API call
         const data = { email, password };
+         // Display loading toast message
+        const loadingToastId = toast.loading("Logging in..."); // Show loading toast message
         const res = await utils.makeAuthenticatedPOSTRequest('/auth/login', data);
         setLoading(false); // Set loading back to false after API call completes
 
         console.log(res);
         if (res.error) {
+             toast.dismiss(loadingToastId);
             setCredentialsError(res.error);
             return;
         }
 
         const token = res.token;
         const date = new Date();
-
-        // Display loading toast message
-        const loadingToastId = toast.loading("Logging in..."); // Show loading toast message
 
         // Simulate delay before showing success message
         setTimeout(() => {
